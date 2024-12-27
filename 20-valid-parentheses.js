@@ -17,23 +17,30 @@ let isValid = function(s) {
     };
 
     unresolvedBrackets = [];
+    unresolvedBracketsAdded = 0;
 
     for (let char of s) {
         if (char in openingBrackets) {
             unresolvedBrackets.push(char);
+            unresolvedBracketsAdded += 1;
+        } else if (char in closingBrackets && unresolvedBrackets.length == 0) {
+            return false;
         } else {
-            if (unresolvedBrackets.includes(closingBrackets[char])) {
-                unresolvedBrackets.splice(unresolvedBrackets.indexOf(closingBrackets[char]), 1);
+            if (unresolvedBrackets[unresolvedBrackets.length -1] === closingBrackets[char]) {
+                unresolvedBrackets.pop();
+            } else {
+                break;
             }
         }
     }
 
-    if (unresolvedBrackets.length == 0) {
+    console.log(unresolvedBracketsAdded);
+
+    if (unresolvedBrackets.length == 0 && unresolvedBracketsAdded > 0) {
         return true;
     } else {
         return false;
     }
-
 };
 
-console.log(isValid("(()){}[][[[]]]"));
+console.log(isValid("()"))
